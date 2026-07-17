@@ -2,7 +2,7 @@
   "id": "cutscene-fx",
   "title": "Cutscene FX",
   "description": "Custom cinematic effects.",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
   "manifest":"https://raw.githubusercontent.com/Soroth23/cutscene-fx/refs/heads/main/module.json",
 

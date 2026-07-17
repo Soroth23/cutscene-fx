@@ -1,4 +1,4 @@
-console.log("Cutscene FX | Initializing");
+console.log("CUTSCENE FX LOADED");
 
 import { registerAPI } from "./api.js";
 import { registerSocket } from "./socket.js";
