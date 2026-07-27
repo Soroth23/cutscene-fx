@@ -104,42 +104,105 @@ export function registerAPI() {
         Date.now() + (options.delay ?? 3000);
 
 
-    getSocket().executeForEveryone(
-        "playMusic",
-        {
-            ...options,
-            executeTime
-        }
-    );
+        getSocket().executeForEveryone(
+            "playMusic",
+            {
+                ...options,
+                executeTime
+            }
+        );
 
-};
+    };
 
 Cutscene.whiteout = {};
 
 Cutscene.whiteout.show = function(options={}){
 
-    getSocket().executeForEveryone(
-        "whiteout",
-        options
-    );
+        getSocket().executeForEveryone(
+            "whiteout",
+            options
+        );
 
-};
+    };
 
 Cutscene.whiteout.clear=function(){
 
-    getSocket().executeForEveryone(
-        "clearWhiteout"
-    );
+        getSocket().executeForEveryone(
+            "clearWhiteout"
+        );
 
-};
+    };
 
 Cutscene.scene = {};
 
 Cutscene.scene.change=function(options={}){
 
+        getSocket().executeForEveryone(
+            "changeScene",
+            options
+        );
+
+    };
+
+    Cutscene.button = {};
+
+    Cutscene.button.show = function({
+
+    users = "all",
+
+    ...options
+
+} = {}) {
+
+    const socket = getSocket();
+
+    if (users === "all") {
+
+        socket.executeForEveryone(
+            "showButton",
+            options
+        );
+
+    } else {
+
+        socket.executeForUsers(
+            "showButton",
+            users,
+            options
+        );
+
+    }
+
+};
+
+Cutscene.button.remove = function(users = "all") {
+
+    const socket = getSocket();
+
+    if (users === "all") {
+
+        socket.executeForEveryone(
+            "removeButton"
+        );
+
+    } else {
+
+        socket.executeForUsers(
+            "removeButton",
+            users
+        );
+
+    }
+
+};
+
+Cutscene.ripple = {};
+
+Cutscene.ripple.play = function(color="#66ddff"){
+
     getSocket().executeForEveryone(
-        "changeScene",
-        options
+        "ripple",
+        color
     );
 
 };

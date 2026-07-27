@@ -7,6 +7,7 @@ import { localMoveTokens } from "./effects/tokenmove.js";
 import { localPlayMusic } from "./effects/music.js";
 import { localClearWhiteout, localWhiteout } from "./effects/whiteout.js";
 import { localChangeScene } from "./effects/mapchange.js";
+import { localShowButton, localRemoveButton, localRipple } from "./effects/button.js";
 
 let socket;
 
@@ -67,6 +68,30 @@ export function registerSocket() {
     socket.register(
         "changeScene",
         localChangeScene
+    );
+
+    socket.register(
+
+    "showButton",
+
+    localShowButton
+
+    );
+
+    socket.register(
+
+        "removeButton",
+
+        localRemoveButton
+
+    );
+
+    socket.register(
+
+        "ripple",
+
+        localRipple
+        
     );
 
 }

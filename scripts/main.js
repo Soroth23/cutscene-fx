@@ -2,16 +2,27 @@ import { registerAPI } from "./api.js";
 import { registerSocket } from "./socket.js";
 
 console.log("CUTSCENE FX LOADED");
-console.log("MAIN.JS LOADED");
 
 Hooks.once("ready", () => {
 
-    console.log("MAIN.JS LOADED");
+    console.log("READY START");
 
-    registerSocket();
+    try {
 
-    registerAPI();
+        registerSocket();
 
-    console.log("Cutscene FX Ready");
+        console.log("SOCKET OK");
+
+        registerAPI();
+
+        console.log("API OK");
+
+    }
+
+    catch(error){
+
+        console.error("CUTSCENE FX FAILED", error);
+
+    }
 
 });
