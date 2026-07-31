@@ -20,7 +20,9 @@ export function localShowButton({
 
     color = "#2b6cff",
 
-    textColor = "white"
+    textColor = "white",
+
+    timeout = 30000
 
 } = {}) {
 
@@ -31,12 +33,22 @@ export function localShowButton({
     Object.assign(container.style,{
 
         position:"fixed",
+
         inset:"0",
+
         display:"flex",
+
         justifyContent:"center",
+
         alignItems:"center",
+
         pointerEvents:"none",
-        zIndex:"10000"
+
+        zIndex:"10000",
+
+        opacity:"1",
+
+        transition:"opacity 2s ease"
 
     });
 
@@ -72,7 +84,11 @@ export function localShowButton({
         0 0 80px ${color}
     `,
 
-    transition:"transform .15s ease, filter .15s ease"
+    transition:
+        "transform 2s ease, " +
+        "filter 2s ease, " +
+        "opacity 2s ease, " +
+        "box-shadow 2s ease"
 
 });
 
@@ -97,6 +113,11 @@ export function localShowButton({
 
     button.onclick = async () => {
 
+        if(!container)
+            return;
+
+        clearTimeout(timeoutId)
+
         button.disabled = true;
 
         await getSocket().executeForEveryone(
@@ -111,6 +132,26 @@ export function localShowButton({
     container.appendChild(button);
 
     document.body.appendChild(container);
+
+    const timeoutId = setTimeout(async () => {
+
+        if(!container)
+            return;
+
+        button.disabled = true;
+
+        button.style.pointerEvents = "none";
+        button.style.boxShadow = "none";
+
+        container.style.opacity = "0";
+
+        setTimeout(() => {
+
+            removeButton();
+
+        }, 2000);
+
+    }, timeout);
 
 }
 
@@ -151,8 +192,10 @@ export function localRipple(color="#66ddff"){
             zIndex:"11000",
 
             transition:
-                "transform .9s ease-out, " +
-                "opacity .9s ease-out"
+                "transform 2s ease, " +
+                "filter 2s ease, " +
+                "opacity 2s ease, " +
+                "box-shadow 2s ease"
 
         });
 
@@ -176,7 +219,7 @@ export function localRipple(color="#66ddff"){
             ripple.remove();
             resolve();
 
-        },900);
+        }, 2000);
 
     });
 
