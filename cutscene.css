@@ -1,0 +1,14 @@
+body.cutscene-fx-active #interface,
+body.cutscene-fx-active #ui-left,
+body.cutscene-fx-active #ui-right,
+body.cutscene-fx-active #ui-top,
+body.cutscene-fx-active #ui-bottom,
+body.cutscene-fx-active #sidebar,
+body.cutscene-fx-active #hotbar,
+body.cutscene-fx-active #players,
+body.cutscene-fx-active #scene-navigation,
+body.cutscene-fx-active #controls,
+body.cutscene-fx-active #logo,
+body.cutscene-fx-active #notifications {
+    display: none !important;
+}

@@ -8,6 +8,8 @@ import { localPlayMusic } from "./effects/music.js";
 import { localClearWhiteout, localWhiteout } from "./effects/whiteout.js";
 import { localChangeScene } from "./effects/mapchange.js";
 import { localShowButton, localRemoveButton, localRipple } from "./effects/button.js";
+import { localHideLights, localShowLights, localToggleLights } from "./effects/lights.js";
+import { localStartCutsceneMode, localStopCutsceneMode } from "./effects/cutscenemode.js";
 
 let socket;
 
@@ -71,27 +73,43 @@ export function registerSocket() {
     );
 
     socket.register(
-
-    "showButton",
-
-    localShowButton
-
+        "showButton",
+        localShowButton
     );
 
     socket.register(
-
-        "removeButton",
-
-        localRemoveButton
-
+       "removeButton",
+       localRemoveButton
     );
 
     socket.register(
+       "ripple",
+        localRipple       
+    );
 
-        "ripple",
+    socket.register(
+        "lightsHide",
+        localHideLights
+    );
 
-        localRipple
-        
+    socket.register(
+        "lightsShow",
+        localShowLights
+    );
+
+    socket.register(
+        "lightsToggle",
+        localToggleLights
+    );
+
+    socket.register(
+        "cutsceneStart",
+        localStartCutsceneMode
+    );
+
+    socket.register(
+        "cutsceneStop",
+        localStopCutsceneMode
     );
 
 }

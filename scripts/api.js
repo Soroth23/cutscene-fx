@@ -207,6 +207,67 @@ Cutscene.ripple.play = function(color="#66ddff"){
 
 };
 
+Cutscene.lights = {};
+
+Cutscene.lights.hide = function(lightIds = []) {
+
+    getSocket().executeAsGM(
+        "lightsHide",
+        lightIds
+    );
+
+};
+
+Cutscene.lights.show = function(lightIds = [], duration = 3000) {
+
+    getSocket().executeAsGM(
+        "lightsShow",
+        lightIds,
+        duration
+    );
+
+};
+
+Cutscene.lights.toggle = function(lightIds = []) {
+
+    getSocket().executeAsGM(
+        "lightsToggle",
+        lightIds
+    );
+
+};
+
+Cutscene.mode = {};
+
+Cutscene.mode.start = function({
+
+    x = 0,
+
+    y = 0,
+
+    scale = 1
+
+} = {}) {
+
+    getSocket().executeForEveryone(
+        "cutsceneStart",
+        {
+            x,
+            y,
+            scale
+        }
+    );
+
+};
+
+Cutscene.mode.stop = function() {
+
+    getSocket().executeForEveryone(
+        "cutsceneStop"
+    );
+
+};
+
     console.log("STARFIELD API CREATED", Cutscene.starfield);
 
 }
