@@ -10,6 +10,7 @@ import { localChangeScene } from "./effects/mapchange.js";
 import { localShowButton, localRemoveButton, localRipple } from "./effects/button.js";
 import { localHideLights, localShowLights, localToggleLights } from "./effects/lights.js";
 import { localStartCutsceneMode, localStopCutsceneMode } from "./effects/cutscenemode.js";
+import { localImpact } from "./effects/impact.js";
 
 let socket;
 
@@ -110,6 +111,11 @@ export function registerSocket() {
     socket.register(
         "cutsceneStop",
         localStopCutsceneMode
+    );
+
+    socket.register(
+        "impact",
+        localImpact
     );
 
 }

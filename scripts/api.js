@@ -268,6 +268,15 @@ Cutscene.mode.stop = function() {
 
 };
 
+Cutscene.impact = function(options = {}) {
+
+    getSocket().executeForEveryone(
+        "impact",
+        options
+    );
+
+};
+
     console.log("STARFIELD API CREATED", Cutscene.starfield);
 
 }
