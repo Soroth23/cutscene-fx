@@ -1,4 +1,4 @@
-let impactContainer = null;
+import { hideUI, restoreUI } from "../ui.js";
 
 
 /*  Impact Effects  */
@@ -265,18 +265,23 @@ export async function localImpact({
 
 
     //  Hide Foundry UI
+    //  Each impact gets its own reason, so overlapping
+    //  impacts don't restore the UI for each other
 
-    document.body.classList.add(
-        "cutscene-fx-active"
-    );
+    const uiReason = Symbol("impact");
+
+    hideUI(uiReason);
+
+
+    // Kept local so a second impact can't remove this one's container
+
+    const impactContainer =
+        document.createElement("div");
 
 
     try {
 
         // Create Container
-
-        impactContainer =
-            document.createElement("div");
 
         impactContainer.id =
             "cutscene-fx-impact";
@@ -362,7 +367,11 @@ export async function localImpact({
 
         if (sound) {
 
-            AudioHelper.play(
+            // false = play locally only. This already runs on
+            // every client, so broadcasting would play it once
+            // per connected user.
+
+            foundry.audio.AudioHelper.play(
                 {
 
                     src: sound,
@@ -375,7 +384,7 @@ export async function localImpact({
 
                 },
 
-                true
+                false
             );
 
         }
@@ -402,7 +411,7 @@ export async function localImpact({
 
         await new Promise(
             resolve =>
-                selfTimeout(
+                setTimeout(
                     resolve,
                     duration
                 )
@@ -415,21 +424,13 @@ export async function localImpact({
 
         // Remove Impact
 
-        if (impactContainer) {
-
-            impactContainer.remove();
-
-            impactContainer = null;
-
-        }
+        impactContainer.remove();
 
 
 
         // Restore Foundry UI
 
-        document.body.classList.remove(
-            "cutscene-fx-active"
-        );
+        restoreUI(uiReason);
         
     }
 

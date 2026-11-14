@@ -1,4 +1,5 @@
-let dialogueContainer = null;
+// Glowing star "portraits" used by the dialogue system's star style.
+// See dialogue.js for the dialogue box itself.
 
 const STAR_TYPES = {
 
@@ -139,22 +140,6 @@ const STAR_TYPES = {
 
 };
 
-function createContainer(){
-
-    dialogueContainer = document.createElement("div");
-
-    Object.assign(dialogueContainer.style,{
-        position:"fixed",
-        inset:"0",
-        pointerEvents:"none",
-        zIndex:"10000"
-    });
-
-    document.body.appendChild(dialogueContainer);
-
-}
-
-
 function addStarAnimation(){
 
     if(document.getElementById("cutscene-star-style"))
@@ -279,18 +264,22 @@ function addStarAnimation(){
 }
 
 
-function createStar(side, starType="ancient"){
+export function createStarOrb(starType="ancient", size=null){
+
+    addStarAnimation();
 
     const star = document.createElement("div");
-    const style = STAR_TYPES[starType] ?? STAR_TYPES.ancient
+    const style = STAR_TYPES[starType] ?? STAR_TYPES.ancient;
+
+    const finalSize = size ?? style.size;
 
     Object.assign(star.style,{
 
-        position:"absolute",
+        width:`${finalSize}px`,
 
-        width:`${style.size}px`,
+        height:`${finalSize}px`,
 
-        height:`${style.size}px`,
+        flexShrink:"0",
 
         borderRadius:"50%",
 
@@ -302,100 +291,6 @@ function createStar(side, starType="ancient"){
 
     });
 
-    star.style.top="40%";
-
-    if(side==="left")
-        star.style.left="10%";
-    else
-        star.style.right="10%";
-
-    dialogueContainer.appendChild(star);
-
-
-}
-
-
-function createText(title,text){
-
-    const box=document.createElement("div");
-
-    Object.assign(box.style,{
-
-        position:"absolute",
-
-        bottom:"15%",
-
-        left:"20%",
-
-        right:"20%",
-
-        padding:"30px",
-
-        background:"rgba(0,0,20,.85)",
-
-        border:"2px solid white",
-
-        borderRadius:"20px",
-
-        color:"white",
-
-        fontSize:"28px",
-
-        textAlign:"center",
-
-        boxShadow:"0 0 40px white"
-
-    });
-
-    box.innerHTML=
-    `
-    <h2>${title}</h2>
-    <p>${text}</p>
-    `;
-
-    dialogueContainer.appendChild(box);
-
-}
-
-
-export function localStarDialogue({
-
-    side="left",
-
-    starType="ancient",
-    
-    title="",
-
-    text="",
-
-    duration=5000
-
-}={}){
-
-    addStarAnimation
-
-    if(dialogueContainer)
-        dialogueContainer.remove();
-
-    createContainer();
-
-    createStar(
-        side,
-        starType
-    );
-
-    createText(
-        title,
-        text
-    );
-
-    setTimeout(()=>{
-
-        dialogueContainer.remove();
-
-        dialogueContainer=null;
-
-    },duration);
-
+    return star;
 
 }

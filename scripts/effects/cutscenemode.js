@@ -1,26 +1,10 @@
-let cutsceneModeActive = false;
+import { hideUI, restoreUI } from "../ui.js";
+
+let cameraLocked = false;
 
 let lockedX = 0;
 let lockedY = 0;
 let lockedScale = 1;
-
-
-
-/*  UI  */
-
-
-function hideUI() {
-
-    document.body.classList.add("cutscene-fx-active");
-
-}
-
-
-function restoreUI() {
-
-    document.body.classList.remove("cutscene-fx-active");
-
-}
 
 
 
@@ -33,7 +17,7 @@ function enforceCameraLock(canvasInstance, position) {
     if (game.user.isGM)
         return;
 
-    if (!cutsceneModeActive)
+    if (!cameraLocked)
         return;
 
     const distance =
@@ -63,30 +47,57 @@ function enforceCameraLock(canvasInstance, position) {
 /*  Start Cutscene Mode  */
 
 
+// Centers the scene and zooms so the whole thing fits on screen
+
+function fitSceneView() {
+
+    const rect = canvas.dimensions.sceneRect;
+
+    return {
+        x: rect.x + rect.width / 2,
+        y: rect.y + rect.height / 2,
+        scale: Math.min(
+            window.innerWidth / rect.width,
+            window.innerHeight / rect.height
+        )
+    };
+
+}
+
+
 export async function localStartCutsceneMode({
 
-    x = 0,
+    // Leave x and y out to fit the whole scene on screen
+    x = null,
 
-    y = 0,
+    y = null,
 
-    scale = 1
+    scale = null,
+
+    lockCamera = true
 
 } = {}) {
-
-    if (!canvas.ready)
-        return;
 
     //GMs are not affected by cutscene mode
     if (game.user.isGM)
         return;
 
-    cutsceneModeActive = true;
+    // This player may still be loading a scene the GM just switched to
+    if (!canvas.ready)
+        await new Promise(resolve => Hooks.once("canvasReady", resolve));
 
-    lockedX = x;
-    lockedY = y;
-    lockedScale = scale;
+    const view =
+        x === null || y === null
+            ? fitSceneView()
+            : { x, y, scale: scale ?? 1 };
 
-    hideUI();
+    cameraLocked = lockCamera;
+
+    lockedX = view.x;
+    lockedY = view.y;
+    lockedScale = view.scale;
+
+    hideUI("cutsceneMode");
 
     // Move player camera to the locked position
     canvas.pan({
@@ -108,9 +119,9 @@ export async function localStopCutsceneMode() {
     if (game.user.isGM)
         return;
 
-    cutsceneModeActive = false;
+    cameraLocked = false;
 
-    restoreUI();
+    restoreUI("cutsceneMode");
 
 }
 

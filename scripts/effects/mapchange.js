@@ -18,4 +18,8 @@ export async function localChangeScene({
 
     await scene.activate();
 
+    // Activating pulls players over; make sure the GM's view follows too
+    if (canvas.scene?.id !== scene.id)
+        await scene.view();
+
 }
